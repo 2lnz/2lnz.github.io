@@ -1,0 +1,138 @@
+/* ============================================================
+   布局调整
+   - 桌面端(>768px)：左右留白对称 52px，内容宽度跟随窗口自适应
+     · 右侧悬浮按钮组：按钮 35px + 右缘偏移 10px ≈ 占 45px
+     · 留白 52px 比它宽一点点（留出约 7px 空隙）
+     · 左侧留白与右侧相同
+   - 首页文章列数：窗口宽 ≥900px 时双列，否则单列
+     （覆盖主题默认 1201px 断点）
+   - 文章卡片间距 20px -> 28px
+   - 去掉 footer 的白色羽化渐变底部（透明，透出背景）
+   - 滚动后固定导航改为毛玻璃模糊（不再是不透明白色）
+   - 移动端(≤768px)保持主题默认
+   如需恢复默认：删除本文件并去掉 _config.anzhiyu.yml inject.head 里
+   对应 <link> 即可。
+   ============================================================ */
+
+@media screen and (min-width: 769px) {
+  .layout {
+    max-width: none !important;
+    padding: 1.25rem 52px !important;
+  }
+  /* 首页横幅：独立全宽区块，给它加上与内容列相同的左右边距，
+     使其水平范围与下方文章卡片完全一致（不再顶满全屏） */
+  #home_top {
+    max-width: none !important;
+    margin: 0 52px !important;
+    width: auto !important;
+    padding: 0 !important;
+  }
+}
+
+/* 文章卡片间距：20px -> 28px */
+#recent-posts > .recent-post-item:not(:first-child) {
+  margin-top: 28px !important;
+}
+
+/* ============ 首页文章列数 ============
+   窗口宽 ≥900px → 双列（不看高度，避免窗口高度被浏览器工具栏
+   吃掉后误判成小屏幕） */
+@media screen and (min-width: 900px) {
+  #recent-posts {
+    align-content: flex-start;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  #recent-posts > .recent-post-item {
+    width: 49% !important;
+    margin-top: 28px !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    flex-direction: column;
+    height: auto !important;
+  }
+  #recent-posts > .recent-post-item > .recent-post-info > .content {
+    display: none !important;
+  }
+  #recent-posts > .recent-post-item .post_cover {
+    width: 100% !important;
+    height: 225px !important;
+  }
+  #recent-posts > .recent-post-item .post_cover img.post_bg {
+    width: 100% !important;
+    height: 100% !important;
+  }
+  #recent-posts > .recent-post-item .left_radius,
+  #recent-posts > .recent-post-item .right_radius {
+    border-radius: 8px 8px 0 0 !important;
+  }
+}
+
+/* 窗口宽 <900px → 单列（桌面端样式，不碰移动端） */
+@media screen and (min-width: 769px) and (max-width: 899px) {
+  #recent-posts {
+    display: block !important;
+  }
+  #recent-posts > .recent-post-item {
+    width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    flex-direction: row !important;
+    height: 18em !important;
+  }
+  #recent-posts > .recent-post-item:first-child {
+    margin-top: 0 !important;
+  }
+  #recent-posts > .recent-post-item .post_cover {
+    width: 70% !important;
+    height: 200px !important;
+  }
+  #recent-posts > .recent-post-item .left_radius,
+  #recent-posts > .recent-post-item .right_radius {
+    border-radius: 0 !important;
+  }
+}
+
+/* ============ footer：透明，透出背后的固定背景图 ============ */
+#footer,
+#footer-bar {
+  background: transparent !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+/* ============ footer 文字改浅色 ============
+   footer 透明（带主题暗色遮罩），浅色文字更清晰 */
+#footer-wrap,
+#workboard,
+#runtimeTextTip,
+#footer-bar,
+#footer-bar-tips,
+.copyright,
+#footer-bar a,
+#footer-wrap a {
+  color: #eee !important;
+}
+#runtime {
+  color: #eee !important;
+  background: transparent !important;
+}
+
+/* ============ 滚动后固定导航：毛玻璃模糊 ============ */
+#page-header.nav-fixed #nav {
+  background: rgba(255, 255, 255, 0.6) !important;
+  -webkit-backdrop-filter: saturate(180%) blur(15px) !important;
+  backdrop-filter: saturate(180%) blur(15px) !important;
+}
+[data-theme="dark"] #page-header.nav-fixed #nav {
+  background: rgba(29, 30, 34, 0.6) !important;
+}
+
+/* ============ 首页背景图：随滚动渐变毛玻璃 ============
+   filter 由 header-frost.js 直接写在内联样式上（!important），
+   这里只给容器和清晰层加上平滑过渡 */
+.pl-container,
+.pl-container .pl-img:not(.pl-blur) {
+  transition: opacity 1s, filter 0.4s ease;
+}
