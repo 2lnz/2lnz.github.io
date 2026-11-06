@@ -129,6 +129,15 @@
   background: rgba(29, 30, 34, 0.6) !important;
 }
 
+/* ============ 去掉固定导航四周的 outline ============
+   主题给 #page-header.nav-fixed #nav 加了
+   outline: 1px solid var(--anzhiyu-card-border)，
+   outline 是四边都画线，暗色模式下 #42444a 灰线在底部很显眼。
+   亮色下该线与背景几乎同色，一并去掉不影响观感。 */
+#page-header.nav-fixed #nav {
+  outline: none !important;
+}
+
 /* ============ 首页背景图：随滚动渐变毛玻璃 ============
    filter 由 header-frost.js 直接写在内联样式上（!important），
    这里只给容器和清晰层加上平滑过渡 */
